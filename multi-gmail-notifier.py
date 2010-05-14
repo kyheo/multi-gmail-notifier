@@ -74,7 +74,7 @@ class Notifier:
         # Indicator
         self.server = indicate.indicate_server_ref_default()
         self.server.set_type("message.mail")
-        self.server.set_desktop_file(os.path.join(path, 'gmail-notifier.desktop'))
+        self.server.set_desktop_file(os.path.join(path, 'multi-gmail-notifier.desktop'))
         self.server.connect("server-display", self.clicked)
         self.server.show()
 
@@ -131,7 +131,7 @@ def daemonize(stdin='/dev/null', stdout='/dev/null', stderr='/dev/null'):
 if (__name__ == "__main__"):
     HOME_FOLDER         = "/home/%s" % (os.popen("whoami").read()[:-1])
     CONFIG_FOLDER       = "%s/.config" % (HOME_FOLDER)
-    GMAIL_CONFIG_FOLDER = "%s/gmail-notifier" % (CONFIG_FOLDER)
+    GMAIL_CONFIG_FOLDER = "%s/multi-gmail-notifier" % (CONFIG_FOLDER)
     CONFIG_FILE         = "%s/settings.conf" % (GMAIL_CONFIG_FOLDER)
 
     CHECK = 60 * 5
@@ -146,7 +146,7 @@ if (__name__ == "__main__"):
     notifier = Notifier(APP_PATH, CHECK)
     for section in config.sections():
         username = config.get(section, 'username')
-        realm    = "Gmail Notifier - Account: %s" % (username,)
+        realm    = "Multi Gmail Notifier - Account: %s" % (username,)
         password = keyring.get_password(realm, username)
         uri      = config.get(section, 'homepage')
         

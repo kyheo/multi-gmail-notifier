@@ -7,7 +7,7 @@ import ConfigParser
 
 HOME_FOLDER         = "/home/%s" % (os.popen("whoami").read()[:-1])
 CONFIG_FOLDER       = "%s/.config" % (HOME_FOLDER)
-GMAIL_CONFIG_FOLDER = "%s/gmail-notifier" % (CONFIG_FOLDER)
+GMAIL_CONFIG_FOLDER = "%s/multi-gmail-notifier" % (CONFIG_FOLDER)
 CONFIG_FILE         = "%s/settings.conf" % (GMAIL_CONFIG_FOLDER)
 
 if not os.path.exists(CONFIG_FOLDER):
@@ -20,7 +20,7 @@ username = raw_input('Username: ')
 password = getpass.getpass()
 homepage = raw_input('Homepage (ex: http://www.gmail.com): ')
 
-realm  = "Gmail Notifier - Account: %s" % (username,)
+realm  = "Multi Gmail Notifier - Account: %s" % (username,)
 
 keyring.set_password(realm, username, password)
 
