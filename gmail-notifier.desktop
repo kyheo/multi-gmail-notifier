@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Kyheo Gmail Notifier
+Icon=applications-email-panel
+Type=Application
+Categories=Network;
+Exec=read.py
+StartupNotify=false
+Terminal=false
