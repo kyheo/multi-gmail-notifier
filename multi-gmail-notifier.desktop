@@ -4,6 +4,6 @@ Name=Multi Gmail Notifier
 Icon=applications-email-panel
 Type=Application
 Categories=Network;
-Exec=read.py
+Exec=multi-gmail-notifier.py
 StartupNotify=false
 Terminal=false
