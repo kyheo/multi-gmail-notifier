@@ -1,0 +1,35 @@
+PYTHON DEPENDENCIES
+===================
+ConfigParser, keyring, gobject, gtk, feedparser, urllib2, base64, indicate, 
+pynotify
+
+
+USAGE
+=====
+1- Run gmail-notifier-settings.py
+   It will ask for the username (full address ex: foo@gmail.com or for hosted
+   emails sites, foo@bar.com), the homepage for that user (where you login into
+   the account, http://www.gmail.com or http://webmail.bar.com) and then it
+   will ask for the password.
+   Don't get scared, the password is stored in the keyring manager.
+
+   Configuration, username and homepage, is stored in
+   ~/.config/gmail-notifier/settings.conf
+
+   Repeat this step for each account you have.
+
+2- Run gmail-notifier.py
+   It will check every 5 minutes for new email in the configured accounts, and
+   notify in the indicator applet and with a notification bubble if there are
+   new emails.
+
+   The indicator will show an application label (Kyheo Gmail Notifier) and each
+   account with the number of unread emails.
+
+   If a notification was raised, then the account with new emails is flagged
+   with and * as a prefix.
+
+   Clicking on an account will open the homepage in the default webbrowser.
+
+   To silent all the notifications, a click in the app label (Kyheo Gmail
+   Notifier) is enough.
