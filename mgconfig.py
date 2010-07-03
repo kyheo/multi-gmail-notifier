@@ -11,14 +11,14 @@ class MGConfig(object):
         self.config_folder       = "%s/.config" % (self.home_folder)
         self.gmail_config_folder = "%s/multi-gmail-notifier" % (self.config_folder)
         self.config_file         = "%s/settings.conf" % (self.gmail_config_folder)
-        self.app_path            = sys.path[0]
 
         self.check               = 60 * 5
 
         self._init_conf_dirs()
 
-        self._c = ConfigParser.RawConfigParser()
-        self._c.read(self.config_file)
+        self.c = ConfigParser.RawConfigParser()
+        self.c.read(self.config_file)
+
 
     def grab_data(self):
         username = raw_input('Username: ')
@@ -30,15 +30,29 @@ class MGConfig(object):
         keyring.set_password(realm, username, password)
         section_name = "account_%s" % (username,)
         
-        if not self._c.has_section(section_name):
-            self._c.add_section(section_name)
+        if not self.c.has_section(section_name):
+            self.c.add_section(section_name)
 
-        self._c.set(section_name, "username", username)
-        self._c.set(section_name, "homepage", homepage)
-        self._c.write(open(self.config_file, "wb"))
+        self.c.set(section_name, "username", username)
+        self.c.set(section_name, "homepage", homepage)
+        self.c.write(open(self.config_file, "wb"))
+
 
     def get_realm(self, username):
         return "Multi Gmail Notifier - Account: %s" % (username,)
+
+
+    def get_sections(self):
+        return self.c.sections()
+
+
+    def get_data(self, section):
+        username = self.c.get(section, 'username')
+        realm    = self.get_realm(username)
+        password = keyring.get_password(realm, username)
+        uri      = self.c.get(section, 'homepage')
+        return {'username': username, 'password': password, 'uri': uri}
+
 
     def _init_conf_dirs(self):
         if not os.path.exists(self.config_folder):
@@ -46,3 +60,5 @@ class MGConfig(object):
 
         if not os.path.exists(self.gmail_config_folder):
             os.mkdir(self.gmail_config_folder, 0700)
+
+
