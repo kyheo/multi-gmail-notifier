@@ -1,4 +1,4 @@
 #!/usr/bin/env python
-import mgconfig
+from src import mgconfig
 c = mgconfig.MGConfig();
 c.grab_data()
