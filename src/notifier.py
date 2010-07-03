@@ -5,7 +5,7 @@ import gobject, gtk
 import indicate
 import pynotify
 
-class Notifier:
+class Notifier(object):
     def __init__(self, path, check):
         self.accounts = []
         self.check = check

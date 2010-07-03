@@ -20,7 +20,7 @@ class MGConfig(object):
         self.c.read(self.config_file)
 
 
-    def grab_data(self):
+    def request_data(self):
         username = raw_input('Username: ')
         password = getpass.getpass()
         homepage = raw_input('Homepage (ex: http://www.gmail.com): ')
