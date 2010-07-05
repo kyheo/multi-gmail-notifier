@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Multi Gmail Notifier - Settings
+Icon=applications-email-panel
+Type=Application
+Categories=Network;
+Exec=multi-gmail-notifier-settings.py
+StartupNotify=false
+Terminal=false

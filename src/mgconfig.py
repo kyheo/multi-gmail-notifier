@@ -24,7 +24,10 @@ class MGConfig(object):
         username = raw_input('Username: ')
         password = getpass.getpass()
         homepage = raw_input('Homepage (ex: http://www.gmail.com): ')
+        self.save_data(username, password, homepage)
         
+
+    def save_data(self, username, password, homepage):
         realm  = self.get_realm(username)
 
         keyring.set_password(realm, username, password)
