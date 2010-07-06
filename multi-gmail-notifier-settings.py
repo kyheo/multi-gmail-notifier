@@ -53,7 +53,9 @@ class Settings(object):
 
         self.users_list_init()
 
+    def show(self):
         self.window.show()
+        gtk.main()
 
     def users_list_init(self):
         uts = gtk.TreeStore(str, str, str)
@@ -162,4 +164,4 @@ if __name__ == "__main__":
     APP_PASS = 'multi-gmail-notifier-pass'
  
     settings = Settings()
-    gtk.main()
+    settings.show()
