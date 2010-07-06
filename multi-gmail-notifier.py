@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
-from src.mgconfig  import MGConfig
+from src import gk
+
 from src.daemonize import daemonize
 from src.notifier  import Notifier
 from src.gmail     import GMail
@@ -9,16 +10,20 @@ import os, sys
 import gobject, gtk
 
 if (__name__ == "__main__"):
+    APP_NAME = 'multi-gmail-notifier'
+    APP_PASS = 'multi-gmail-notifier-pass'
+    CHECK    = 60 * 5
  
     if not(len(sys.argv) > 1 and sys.argv[1] == '--no-daemon'):
         daemonize()
     
-    config   = MGConfig() 
-    notifier = Notifier(sys.path[0], config.check)
-
-    for section in config.get_sections():
-        d = config.get_data(section)
-        m = GMail(d['username'], d['password'], d['uri'])
+    config   = gk.GK(APP_NAME, APP_PASS);
+    notifier = Notifier(sys.path[0], CHECK) 
+    
+    for u in config.get_users():
+        m = GMail(u['item'].get_display_name(),
+                  u['item'].get_secret(),
+                  u['attr']['uri'])
         notifier.accounts.append(m)
 
     try:
