@@ -19,13 +19,15 @@ if (__name__ == "__main__"):
     
     config = gk.GK(APP_NAME, APP_PASS);
     config.unlock_app()
+
     notifier = Notifier(sys.path[0], CHECK) 
-    
     for u in config.get_users():
         m = GMail(u['item'].get_display_name(),
                   u['item'].get_secret(),
                   u['attr']['uri'])
         notifier.accounts.append(m)
+
+    config.lock_app()
 
     try:
         notifier.run()

@@ -76,6 +76,7 @@ class Settings(object):
         self.mf_window.hide()
 
     def exit(self, widget):
+        self.config.lock_app()
         gtk.main_quit()
 
     def users_list_changed(self, widget):

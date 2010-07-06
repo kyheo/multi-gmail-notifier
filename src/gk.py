@@ -17,6 +17,9 @@ class GK(object):
         if self._app_name not in gk.list_keyring_names_sync():
             gk.create_sync(self._app_name, self._app_pass)
 
+    def lock_app(self):
+        gk.lock_sync(self._app_name)
+
     def unlock_app(self):
         inf = gk.get_info_sync(self._app_name)
         if inf.get_is_locked():
