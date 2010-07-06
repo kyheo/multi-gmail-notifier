@@ -1,7 +1,14 @@
 import gnomekeyring as gk
 
 class GK(object):
-    
+   
+    def __unlock_app(fn):
+        def deco(self, *args, **kwargs):
+            self.unlock_app()
+            res = fn(self, *args, **kwargs)
+            return res
+        return deco
+
     def __init__(self, app_name, app_pass):
         self._app_name = app_name.lower()
         self._app_pass = app_pass
@@ -11,11 +18,14 @@ class GK(object):
             gk.create_sync(self._app_name, self._app_pass)
 
     def unlock_app(self):
-        gk.unlock_sync(self._app_name, self._app_pass)
+        inf = gk.get_info_sync(self._app_name)
+        if inf.get_is_locked():
+            gk.unlock_sync(self._app_name, self._app_pass)
 
     def delete_app(self):
         gk.delete_sync(self._app_name)
     
+    @__unlock_app
     def add_user(self, username, password, uri):
         atts = {'uri': uri}
         key,item = self.search_user(username)
@@ -24,6 +34,7 @@ class GK(object):
         gk.item_create_sync(self._app_name, gk.ITEM_GENERIC_SECRET, username, \
                             atts, password, True)
 
+    @__unlock_app
     def search_user(self, username):
         item_keys = gk.list_item_ids_sync(self._app_name)
         if item_keys is not None:
@@ -33,6 +44,7 @@ class GK(object):
                     return key, item_info
         return None,None
 
+    @__unlock_app
     def get_users(self):
         users = []
         item_keys = gk.list_item_ids_sync(self._app_name)
@@ -41,11 +53,13 @@ class GK(object):
             users.append({'item': item, 'attr': attr})
         return users
 
+    @__unlock_app
     def get_user(self, key):
         item = gk.item_get_info_sync(self._app_name, key)
         attr = gk.item_get_attributes_sync(self._app_name, key)
         return item, attr
 
+    @__unlock_app
     def delete_user(self, username=None, key=None):
         if key is None:
             key,item = self.search_user(username)
