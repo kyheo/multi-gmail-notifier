@@ -17,7 +17,8 @@ if (__name__ == "__main__"):
     if not(len(sys.argv) > 1 and sys.argv[1] == '--no-daemon'):
         daemonize()
     
-    config   = gk.GK(APP_NAME, APP_PASS);
+    config = gk.GK(APP_NAME, APP_PASS);
+    config.unlock_app()
     notifier = Notifier(sys.path[0], CHECK) 
     
     for u in config.get_users():

@@ -11,6 +11,7 @@ class Settings(object):
     def __init__(self):
         self.config = gk.GK(APP_NAME, APP_PASS);
         self.config.create_app()
+        self.config.unlock_app()
 
         builder = gtk.Builder()
         builder.add_from_file("multi-gmail-notifier-settings.glade")
