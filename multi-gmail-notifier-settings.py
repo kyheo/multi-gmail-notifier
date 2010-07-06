@@ -4,7 +4,6 @@ from src import gk
 
 import pygtk
 import gtk
-import pango
 
 class Settings(object):
     
@@ -47,7 +46,6 @@ class Settings(object):
         self.mf_window = builder.get_object('mf_window')
 
         self.mf_label = builder.get_object('mf_label')
-        self.mf_label.modify_font(pango.FontDescription("sans 26"))
 
         self.users_list = builder.get_object('users_list')
 
