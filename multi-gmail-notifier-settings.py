@@ -15,18 +15,22 @@ class Settings(object):
         builder = gtk.Builder()
         builder.add_from_file("multi-gmail-notifier-settings.glade")
         builder.connect_signals({
-            'on_settings_window_destroy' : self.exit,
-            'on_mf_ok_clicked': self.mf_exit,
+            # Windows
+            'on_settings_window_destroy': self.exit,
+            'on_mf_ok_clicked'          : self.mf_exit,
+
+            # Users List
             'on_users_list_cursor_changed': self.users_list_changed,
 
             # Buttons
-            'on_new_clicked': self.new_click,
-            'on_save_clicked': self.save_click,
+            'on_new_clicked'   : self.new_click,
+            'on_save_clicked'  : self.save_click,
             'on_remove_clicked': self.remove_click,
-            'on_quit_clicked': self.exit,
+            'on_quit_clicked'  : self.exit,
             'on_cancel_clicked': self.cancel_click
             })
-        
+
+ 
         self.window = builder.get_object("settings_window")
         
         self.username_entry = builder.get_object('username_entry')
