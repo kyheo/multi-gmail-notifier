@@ -1,0 +1,7 @@
+https://mail.google.com/mail/feed/atom/work/.
+en esa url work es el label a checkear
+
+el metodo __unlock_app de gk.GK tiene que lockear la aplicacion antes
+de devolver res ...
+
+
