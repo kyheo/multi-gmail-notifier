@@ -18,5 +18,6 @@ setup(
     install_requires = ['python-notify',
                         'python-indicate',
                         'python-gobject',
+                        'python-feedparser',
                         ]
 )
