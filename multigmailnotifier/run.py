@@ -11,7 +11,8 @@ import gtk
 import pynotify
 
 from multigmailnotifier import gk
-
+        
+        
 class Label(object):
     
     CHECK_URL = 'https://mail.google.com/mail/feed/atom/%s'
@@ -119,10 +120,9 @@ class Account(object):
     def _create_desktop_file(self):
         data = '''[Desktop Entry]
 Version=1.0
-Name=MGM - ##NAME##
+Name=##NAME##
 Type=Application
-Icon=applications-email-panel
-        '''
+Icon=applications-email-panel'''
         o = open(self.desktop_file,"w")
         o.write(re.sub("##NAME##", self.user, data))
         o.close()
