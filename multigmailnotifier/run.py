@@ -12,8 +12,6 @@ import pynotify
 
 from multigmailnotifier import gk
 
-#FIXME Source DESKTOP_FILE is hardcoded
-DESKTOP_FILE = '/home/martin/dev/multi-gmail-notifier/multigmailnotifier.desktop'
 
 class Label(object):
     
@@ -118,7 +116,12 @@ class Account(object):
             label.silence()
 
     def _create_desktop_file(self):
-        data = open(DESKTOP_FILE).read()
+        data = '''[Desktop Entry]
+Version=1.0
+Name=MGM - ##NAME##
+Type=Application
+Icon=applications-email-panel
+        '''
         o = open(self.desktop_file,"w")
         o.write(re.sub("##NAME##", self.user, data))
         o.close()
