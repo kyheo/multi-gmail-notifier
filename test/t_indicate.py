@@ -36,24 +36,28 @@ def timeout_cb(indicator):
 
 
 if __name__ == "__main__":
-    # Setup the server
-    server = indicate.indicate_server_ref_default()
-    server.set_type("message.mail")
-    server.set_desktop_file(desktop_file)
-    server.connect("server-display", server_display)
-    server.show()
-    
-    # Setup the message
-    indicator = indicate.Indicator()
-    indicator.set_property("sender", "Test message")
-    indicator.set_property("count", "1")
-    indicator.show()
-    indicator.connect("user-display", display)
 
-    server.indicators = [indicator]
+    for i in range(2):
+        pid = os.fork()
+        if pid == 0:
+            # Setup the server
+            server = indicate.indicate_server_ref_default()
+            server.set_type("message.mail")
+            server.set_desktop_file(desktop_file)
+            server.connect("server-display", server_display)
+            server.show()
+            
+            # Setup the message
+            indicator = indicate.Indicator()
+            indicator.set_property("sender", "Test message %d" % (i,))
+            indicator.set_property("count", "1")
+            indicator.show()
+            indicator.connect("user-display", display)
 
-    # Loop
-    gobject.timeout_add_seconds(3, timeout_cb, indicator)
-    gtk.main()
+            server.indicators = [indicator]
+
+            # Loop
+            gobject.timeout_add_seconds(3, timeout_cb, indicator)
+            gtk.main()
 
 
