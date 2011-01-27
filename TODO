@@ -2,3 +2,8 @@ multigmailnotifier/run.py:45:        #TODO Open label on browser
 
 Graphic admin (take old and work from there). Timeout is applicable on account
 basis, and each account must specify labels to check
+
+setup.py is working almost well, but I can't figure out how the dependencies
+should be set up. 
+I think I should test it on a clean machine.
+Check also gk dependencies
