@@ -14,9 +14,9 @@ setup(
     author_email = "marrese@gmail.com",
     description = "GMail new email checker",
     #long_description=read('README'),
-    install_requires = ['python-notify',
-                        'python-indicate',
+    install_requires = ['feedparser',
+                        #'python-notify',
+                        #'python-indicate',
                         #'pygobject',
-                        #'feedparser',
                         ]
 )
