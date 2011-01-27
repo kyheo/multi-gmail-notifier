@@ -136,20 +136,25 @@ def main():
     config = gk.GK(APP_NAME, APP_PASS)
     config.unlock_app()
 
+    inFather = True
     for u in config.get_users():
-        a = Account(u['item'].get_display_name(), u['item'].get_secret(),
-                    u['attr']['uri']
-                    #, labels=['Inbox', '__JOBS__', 'Listas/PyAr']
-                    #, timeout=timeout
-                    )
-        a.check()
-    config.lock_app()
+        pid = os.fork()
+        if pid == 0:
+            inFather = False
+            a = Account(u['item'].get_display_name(), u['item'].get_secret(),
+                        u['attr']['uri']
+                        #, labels=['Inbox', '__JOBS__', 'Listas/PyAr']
+                        #, timeout=timeout
+                        )
+            a.check()
+            gtk.main()
+        else:
+            if len(sys.argv) > 1:
+                print 'kill %d' % (pid,)
+    if inFather:
+        config.lock_app()
 
-    try:
-        gtk.main()
-    except KeyboardInterrupt:
-        print ''
-        sys.exit()
+
 
 if __name__ == '__main__':
     main()
