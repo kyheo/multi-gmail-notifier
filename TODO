@@ -1,0 +1,4 @@
+multigmailnotifier/run.py:45:        #TODO Open label on browser
+
+Graphic admin (take old and work from there). Timeout is applicable on account
+basis, and each account must specify labels to check
