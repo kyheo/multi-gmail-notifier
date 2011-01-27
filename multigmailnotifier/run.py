@@ -1,7 +1,7 @@
 import sys
 import os
 import re
-import urllib2
+import urllib2, urllib
 import base64
 import feedparser
 
@@ -12,10 +12,10 @@ import pynotify
 
 from multigmailnotifier import gk
 
-
 class Label(object):
     
-    URL = 'https://mail.google.com/mail/feed/atom/%s'
+    CHECK_URL = 'https://mail.google.com/mail/feed/atom/%s'
+    LABEL_URL = 'https://mail.google.com/mail/u/0/?shva=1#%s'
 
     def __init__(self, user, passwd, name='inbox'):
         self.user = user
@@ -26,9 +26,12 @@ class Label(object):
         self.unread = False
 
         if self.name.lower() == 'inbox':
-            self.url = self.URL % ('',)
+            self.check_url = self.CHECK_URL % ('',)
+            self.label_url = self.LABEL_URL % (self.name.lower(),)
         else:
-            self.url = self.URL % (name.replace('/', '-'),)
+            self.check_url = self.CHECK_URL % (name.replace('/', '-'),)
+            suffix = "label/%s" % (urllib.quote_plus(name),)
+            self.label_url = self.LABEL_URL % (suffix,)
 
         self.indicator = indicate.Indicator()
         self.indicator.set_property("sender", self.name)
@@ -39,10 +42,8 @@ class Label(object):
         self.check()
 
     def click(self, *args, **kwargs):
+        os.popen("gnome-open '%s' &" % (self.label_url,))
         self.silence()
-        #TODO Open label on browser
-        #https://mail.google.com/mail/u/0/?shva=1#inbox
-        #https://mail.google.com/mail/u/0/?shva=1#label/Listas%2FListas 
 
     def attention(self):
         self.indicator.set_property("sender", "* %s" % (self.name,))
@@ -61,7 +62,7 @@ class Label(object):
         self.indicator.set_property("draw-attention", "false")
 
     def check(self):
-        req = urllib2.Request(self.url)
+        req = urllib2.Request(self.check_url)
         req.add_header("Authorization", \
                        "Basic %s" % (base64.encodestring("%s:%s" % \
                             (self.user, self.passwd))[:-1]))
