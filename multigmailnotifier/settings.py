@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from src import gk
+from multigmailnotifier import gk
 
 import pygtk
 import gtk
@@ -13,7 +13,7 @@ class Settings(object):
         self.config.unlock_app()
 
         self.builder = gtk.Builder()
-        self.builder.add_from_file("multi-gmail-notifier-settings.glade")
+        self.builder.add_from_file("multigmailnotifier-settings.glade")
         self.builder.connect_signals(self);
  
         self.set_initial_state()

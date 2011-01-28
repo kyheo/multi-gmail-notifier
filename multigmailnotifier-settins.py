@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from src import settings
+from multigmailnotifier import settings
 
 if __name__ == "__main__":
     APP_NAME = 'multi-gmail-notifier'
