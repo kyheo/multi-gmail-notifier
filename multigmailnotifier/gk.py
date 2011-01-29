@@ -7,7 +7,7 @@ class GK(object):
         def deco(self, *args, **kwargs):
             self.unlock_app()
             res = fn(self, *args, **kwargs)
-            self.lock_app()
+            #self.lock_app()
             return res
         return deco
 
