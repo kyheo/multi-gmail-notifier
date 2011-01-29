@@ -31,8 +31,8 @@ class GK(object):
         gk.delete_sync(self._app_name)
     
     @__unlock_app
-    def add_user(self, username, password, uri):
-        atts = {'uri': uri}
+    def add_user(self, username, password, uri, labels=None, timeout=None):
+        atts = {'uri': uri, 'labels': labels, 'timeout': timeout}
         key,item = self.search_user(username)
         if item is not None:
             self.delete_user(key=key)

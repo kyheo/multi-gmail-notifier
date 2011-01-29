@@ -30,9 +30,11 @@ class Label(object):
             self.check_url = self.CHECK_URL % ('',)
             self.label_url = self.LABEL_URL % (self.name.lower(),)
         else:
-            self.check_url = self.CHECK_URL % (name.replace('/', '-'),)
+            t = name.replace('/', '-').replace(' ', '-')
+            self.check_url= self.CHECK_URL % (t,)
             suffix = "label/%s" % (urllib.quote_plus(name),)
             self.label_url = self.LABEL_URL % (suffix,)
+
 
         self.indicator = indicate.Indicator()
         self.indicator.set_property("sender", self.name)
@@ -43,20 +45,14 @@ class Label(object):
         self.check()
 
     def click(self, *args, **kwargs):
-        os.popen("gnome-open '%s' &" % (self.label_url,))
+        #FIXME : There is an issue here. When working with more than one
+        #account, the label url change, the /u/0/ change to /u/1/
+        #os.popen("gnome-open '%s' &" % (self.label_url,))
         self.silence()
 
     def attention(self):
         self.indicator.set_property("sender", "* %s" % (self.name,))
         self.indicator.set_property("draw-attention", "true")
-        self.notify()
-
-    def notify(self):
-        title = "%s  ::  %s" % (self.user, self.name)
-        desc = '%d new emails.' % (self.total,)
-        n = pynotify.Notification(title, desc, "notification-message-email")
-        n.set_timeout(2000)
-        n.show()
 
     def silence(self):
         self.indicator.set_property("sender", self.name)
@@ -70,8 +66,11 @@ class Label(object):
         result = feedparser.parse(urllib2.urlopen(req).read())
         self._parse_result(result)
         self.indicator.set_property("count", str(self.total))
+        new = False
         if self.unread:
             self.attention()
+            new = True
+        return new
 
     def _parse_result(self, data):
         self.total = int(data['feed']['fullcount'])
@@ -92,12 +91,13 @@ class Label(object):
 
 class Account(object):
 
-    def __init__(self, user, passwd, uri, labels=['inbox'], timeout=60*5):
+    def __init__(self, user, passwd, uri, labels=['inbox'], timeout=5):
         self.user = user
         self.passwd = passwd
         self.uri = uri
         self.labels = [Label(self.user, self.passwd, l) for l in labels]
-        self.timeout = timeout
+        self.timeout = timeout * 60
+
         self.desktop_file = '/tmp/gmc_%s' % (self.user,) 
 
         self._create_desktop_file()
@@ -109,9 +109,19 @@ class Account(object):
         self.server.show()
 
     def check(self):
+        new = False
         for label in self.labels:
-            label.check()
+            new = label.check()
+        if new:
+            self.notify()
         gobject.timeout_add_seconds(self.timeout, self.check)
+
+    def notify(self):
+        title = "New emails ::  %s" % (self.user,)
+        desc = 'There are new emails.'
+        n = pynotify.Notification(title, desc, "notification-message-email")
+        n.set_timeout(2000)
+        n.show()
 
     def click(self, server, *args, **kwargs):
         for label in self.labels:
@@ -141,11 +151,10 @@ def main():
         pid = os.fork()
         if pid == 0:
             inFather = False
+            labels = [ l.strip() for l in u['attr']['labels'].split(',')]
             a = Account(u['item'].get_display_name(), u['item'].get_secret(),
-                        u['attr']['uri']
-                        #, labels=['Inbox', '__JOBS__', 'Listas/PyAr']
-                        #, timeout=timeout
-                        )
+                        u['attr']['uri'], labels=labels,
+                        timeout=int(u['attr']['timeout']))
             a.check()
             gtk.main()
         else:
